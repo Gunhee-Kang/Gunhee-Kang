@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>강건희 선생님과의 나눔</title>
+  <style>
+    :root{
+      --bg: #f6f6f6;
+      --card: #ffffff;
+      --border: #d9d9d9;
+      --text: #111111;
+      --muted: #666666;
+      --shadow: 0 8px 24px rgba(0,0,0,0.06);
+      --radius: 14px;
+    }
+
+    *{ box-sizing: border-box; }
+    body{
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans KR", Arial, sans-serif;
+      background: linear-gradient(180deg, #ffffff 0%, var(--bg) 100%);
+      color: var(--text);
+    }
+
+    .wrap{
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 28px 18px 60px;
+    }
+
+    header{
+      text-align: center;
+      padding: 12px 0 20px;
+    }
+
+    h1{
+      font-size: 30pt; /* 요청 */
+      margin: 12px 0 6px;
+      letter-spacing: -0.5px;
+    }
+
+    .sub{
+      color: var(--muted);
+      margin: 0;
+      font-size: 12pt;
+    }
+
+    .card{
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px;
+      margin-top: 16px;
+    }
+
+    .q{
+      font-size: 20pt; /* 요청 */
+      margin: 18px 0 10px;
+      line-height: 1.2;
+    }
+
+    textarea{
+      width: 100%;
+      min-height: 110px;
+      padding: 12px 12px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: #fbfbfb;
+      color: var(--text);
+      font-size: 13pt;
+      line-height: 1.5;
+      resize: vertical;
+      outline: none;
+    }
+    textarea:focus{
+      border-color: #bdbdbd;
+      background: #ffffff;
+    }
+
+    .row{
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+
+    .btn{
+      appearance: none;
+      border: 1px solid #111;
+      background: #111;
+      color: #fff;
+      padding: 11px 16px;
+      border-radius: 12px;
+      font-size: 12.5pt;
+      cursor: pointer;
+    }
+    .btn:hover{ filter: brightness(1.1); }
+
+    .btn.secondary{
+      border: 1px solid var(--border);
+      background: #f2f2f2;
+      color: #111;
+    }
+
+    .hint{
+      color: var(--muted);
+      font-size: 11.5pt;
+    }
+
+    .list{
+      display: grid;
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .item{
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 12px;
+      background: #fcfcfc;
+    }
+
+    .meta{
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+    .date{
+      color: var(--muted);
+      font-size: 10.5pt;
+    }
+    .tag{
+      font-size: 10.5pt;
+      color: #111;
+      background: #ededed;
+      border: 1px solid var(--border);
+      padding: 4px 8px;
+      border-radius: 999px;
+    }
+
+    .ansTitle{
+      font-weight: 700;
+      margin: 10px 0 6px;
+    }
+    .ansText{
+      margin: 0;
+      white-space: pre-wrap;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <h1>강건희 선생님과의 나눔</h1>
+      <p class="sub">아래 질문에 자유롭게 의견을 남겨주세요.</p>
+    </header>
+
+    <section class="card" aria-label="의견 작성">
+      <div class="q">1. 오늘 숙제 양의 분량은 어떠셨나요?</div>
+      <textarea id="a1" placeholder="예: 적당했어요 / 조금 많았어요 / 이유는 ..."></textarea>
+
+      <div class="q">2. 오늘 수업중에 아쉬운 부분이 있다면?</div>
+      <textarea id="a2" placeholder="예: 문제 풀이 시간을 조금 더 늘려주면 좋겠어요 ..."></textarea>
+
+      <div class="q">3. 선생님한테 하고 싶은 말은?</div>
+      <textarea id="a3" placeholder="예: 오늘도 감사합니다 / 다음엔 ..."></textarea>
+
+      <div class="row">
+        <div class="hint">※ 현재 버전은 이 브라우저에만 저장됩니다(localStorage).</div>
+        <div style="display:flex; gap:10px;">
+          <button class="btn secondary" id="clearBtn" type="button">입력칸 비우기</button>
+          <button class="btn" id="submitBtn" type="button">의견 제출</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" aria-label="제출된 의견">
+      <div class="row" style="margin-top:0;">
+        <div>
+          <div style="font-weight:800; font-size:14.5pt;">제출된 의견</div>
+          <div class="hint">아래 목록은 이 브라우저에 저장된 제출 내역입니다.</div>
+        </div>
+        <button class="btn secondary" id="wipeStorageBtn" type="button">제출 내역 전체 삭제</button>
+      </div>
+
+      <div class="list" id="list"></div>
+    </section>
+  </div>
+
+  <script>
+    const KEY = "gkh_sharing_submissions_v1";
+
+    const $a1 = document.getElementById("a1");
+    const $a2 = document.getElementById("a2");
+    const $a3 = document.getElementById("a3");
+    const $list = document.getElementById("list");
+
+    function loadItems(){
+      try {
+        return JSON.parse(localStorage.getItem(KEY) || "[]");
+      } catch {
+        return [];
+      }
+    }
+
+    function saveItems(items){
+      localStorage.setItem(KEY, JSON.stringify(items));
+    }
+
+    function formatDate(ts){
+      const d = new Date(ts);
+      return d.toLocaleString("ko-KR", { year:"numeric", month:"2-digit", day:"2-digit", hour:"2-digit", minute:"2-digit" });
+    }
+
+    function escapeHtml(s){
+      return (s ?? "").replace(/[&<>"']/g, (m) => ({
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#39;"
+      }[m]));
+    }
+
+    function render(){
+      const items = loadItems();
+      if(items.length === 0){
+        $list.innerHTML = `<div class="hint">아직 제출된 의견이 없습니다.</div>`;
+        return;
+      }
+
+      $list.innerHTML = items
+        .slice()
+        .reverse()
+        .map((it, idx) => {
+          return `
+            <div class="item">
+              <div class="meta">
+                <span class="tag">의견 #${items.length - idx}</span>
+                <span class="date">${formatDate(it.createdAt)}</span>
+              </div>
+
+              <div class="ansTitle">1) 숙제 분량</div>
+              <p class="ansText">${escapeHtml(it.a1)}</p>
+
+              <div class="ansTitle">2) 수업 아쉬운 점</div>
+              <p class="ansText">${escapeHtml(it.a2)}</p>
+
+              <div class="ansTitle">3) 선생님께 하고 싶은 말</div>
+              <p class="ansText">${escapeHtml(it.a3)}</p>
+            </div>
+          `;
+        })
+        .join("");
+    }
+
+    function clearInputs(){
+      $a1.value = "";
+      $a2.value = "";
+      $a3.value = "";
+      $a1.focus();
+    }
+
+    document.getElementById("clearBtn").addEventListener("click", clearInputs);
+
+    document.getElementById("submitBtn").addEventListener("click", () => {
+      const a1 = $a1.value.trim();
+      const a2 = $a2.value.trim();
+      const a3 = $a3.value.trim();
+
+      if(!a1 && !a2 && !a3){
+        alert("최소 한 칸 이상 의견을 작성해 주세요.");
+        $a1.focus();
+        return;
+      }
+
+      const items = loadItems();
+      items.push({ a1, a2, a3, createdAt: Date.now() });
+      saveItems(items);
+      clearInputs();
+      render();
+      alert("의견이 제출되었습니다. 감사합니다!");
+    });
+
+    document.getElementById("wipeStorageBtn").addEventListener("click", () => {
+      const ok = confirm("이 브라우저에 저장된 제출 내역을 전부 삭제할까요?");
+      if(!ok) return;
+      localStorage.removeItem(KEY);
+      render();
+    });
+
+    render();
+  </script>
+</body>
+</html>
